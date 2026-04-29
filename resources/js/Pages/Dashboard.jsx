@@ -36,7 +36,7 @@ export default function Dashboard({ stats, worker, models = [] }) {
                 <p className="text-sm text-gray-500 mt-1">
                     Here's an overview of your sales pages.
                 </p>
-                <div
+                {/* <div
                     className={`mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium ${workerIsActive ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}
                 >
                     <span
@@ -49,7 +49,7 @@ export default function Dashboard({ stats, worker, models = [] }) {
                     {worker?.last_seen
                         ? ` · last heartbeat ${new Date(worker.last_seen).toLocaleTimeString()}`
                         : ""}
-                </p>
+                </p> */}
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
