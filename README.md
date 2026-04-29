@@ -41,6 +41,32 @@ php artisan boost:install
 
 Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
+## Queue Worker
+
+This project uses a background queue worker for AI generation.
+
+### Local development
+
+In VS Code, the worker is configured to auto-start when the folder opens via `.vscode/tasks.json`. You do not need to type `php artisan queue:work` manually every time as long as VS Code opens the workspace and the task runs.
+
+If you want to start it manually, use:
+
+```bash
+php artisan queue:work --queue=sales-pages,default
+```
+
+### Production
+
+Do not rely on a terminal window to keep the worker alive in production. Run it under a process manager such as Supervisor, systemd, Docker restart policies, or a platform job runner.
+
+Example Supervisor config is provided in `deploy/supervisor/laravel-queue-worker.conf.example`.
+
+Recommended production command:
+
+```bash
+php artisan queue:work --queue=sales-pages,default --sleep=1 --tries=3 --timeout=120
+```
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).

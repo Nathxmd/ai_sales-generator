@@ -27,11 +27,11 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-white">
+                <h2 className="text-base font-semibold text-gray-900">
                     Profile Information
                 </h2>
 
-                <p className="mt-1 text-sm text-dark-300">
+                <p className="mt-1 text-sm text-gray-500">
                     Update your account's profile information and email address.
                 </p>
             </header>
@@ -71,13 +71,13 @@ export default function UpdateProfileInformation({
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="mt-2 text-sm text-dark-200">
+                        <p className="mt-2 text-sm text-gray-700">
                             Your email address is unverified.
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
-                                className="rounded-md text-sm text-accent-violet underline hover:text-accent-violet/80 focus:outline-none focus:ring-2 focus:ring-accent-violet focus:ring-offset-0"
+                                className="rounded-md text-sm text-accent-700 underline hover:text-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
                             >
                                 Click here to re-send the verification email.
                             </Link>
@@ -102,7 +102,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-emerald-400">
+                        <p className="text-sm text-green-600">
                             Saved.
                         </p>
                     </Transition>

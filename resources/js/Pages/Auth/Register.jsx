@@ -24,14 +24,12 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <div className="text-center mb-6">
-                <h1 className="text-2xl font-bold gradient-text">Create Account</h1>
-                <p className="text-sm text-dark-300 mt-1">Start generating AI-powered sales pages</p>
-            </div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">Create account</h2>
+            <p className="text-sm text-gray-500 mb-6">Get started with AI-powered sales pages</p>
 
             <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="name" value="Full Name" />
+                    <InputLabel htmlFor="name" value="Name" />
                     <TextInput
                         id="name"
                         name="name"
@@ -45,7 +43,7 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email Address" />
+                    <InputLabel htmlFor="email" value="Email" />
                     <TextInput
                         id="email"
                         type="email"
@@ -73,7 +71,7 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel htmlFor="password_confirmation" value="Confirm password" />
                     <TextInput
                         id="password_confirmation"
                         type="password"
@@ -86,21 +84,13 @@ export default function Register() {
                     <InputError message={errors.password_confirmation} />
                 </div>
 
-                <PrimaryButton className="w-full justify-center py-3 text-sm mt-2" disabled={processing}>
-                    {processing ? (
-                        <span className="flex items-center gap-2">
-                            <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                            </svg>
-                            Creating account...
-                        </span>
-                    ) : 'Create Account'}
+                <PrimaryButton className="w-full justify-center py-2.5" disabled={processing}>
+                    {processing ? 'Creating account...' : 'Create account'}
                 </PrimaryButton>
 
-                <p className="text-center text-sm text-dark-300">
+                <p className="text-center text-sm text-gray-500">
                     Already have an account?{' '}
-                    <Link href={route('login')} className="text-accent-violet hover:text-accent-violet/80 font-medium transition">
+                    <Link href={route('login')} className="text-accent-700 hover:text-accent-800 font-medium">
                         Sign in
                     </Link>
                 </p>

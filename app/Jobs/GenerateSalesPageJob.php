@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\SalesPage;
-use App\Services\GeminiService;
+use App\Services\OpenRouterService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,7 +27,7 @@ class GenerateSalesPageJob implements ShouldQueue
         return [5, 15, 30];
     }
 
-    public function handle(GeminiService $gemini): void
+    public function handle(OpenRouterService $openRouter): void
     {
         $page = SalesPage::query()->find($this->salesPageId);
 
@@ -40,7 +40,7 @@ class GenerateSalesPageJob implements ShouldQueue
         }
 
         try {
-            $content = $gemini->generateSalesPage($page->toArray());
+            $content = $openRouter->generateSalesPage($page->toArray());
 
             $page->update([
                 'generated_content' => $content,

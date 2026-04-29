@@ -4,116 +4,89 @@ import Toast from "@/Components/Toast";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-    const [open, setOpen] = useState(false);
-    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [userOpen, setUserOpen] = useState(false);
 
     const currentRoute = route().current();
 
     const navLinks = [
-        { name: 'Dashboard', route: 'dashboard', icon: (
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-            </svg>
-        )},
-        { name: 'Create', route: 'pages.create', icon: (
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
-            </svg>
-        )},
-        { name: 'History', route: 'pages.history', icon: (
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-        )},
+        { name: 'Dashboard', route: 'dashboard' },
+        { name: 'Create', route: 'pages.create' },
+        { name: 'History', route: 'pages.history' },
     ];
 
     return (
-        <div className="min-h-screen bg-dark-900">
+        <div className="min-h-screen bg-gray-50">
             <Toast />
 
             {/* Navbar */}
-            <header className="sticky top-0 z-50 bg-dark-900/80 backdrop-blur-xl border-b border-white/[0.06]">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 items-center justify-between">
-                        {/* Left: Logo + Nav */}
+            <header className="bg-white border-b border-gray-200">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                    <div className="flex h-14 items-center justify-between">
+                        {/* Left */}
                         <div className="flex items-center gap-8">
-                            <Link href="/" className="flex items-center gap-3 group">
-                                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-accent-violet to-accent-indigo flex items-center justify-center text-white font-bold text-xs shadow-lg shadow-accent-violet/20 group-hover:shadow-accent-violet/40 transition-all duration-300 group-hover:scale-105">
+                            <Link href="/" className="flex items-center gap-2.5">
+                                <div className="h-8 w-8 rounded-lg bg-accent-700 flex items-center justify-center text-white font-semibold text-xs">
                                     AI
                                 </div>
-                                <span className="text-base font-semibold text-white hidden sm:block">
-                                    Sales<span className="text-dark-200 font-normal ml-0.5">Gen</span>
+                                <span className="text-sm font-semibold text-gray-900 hidden sm:block">
+                                    Sales Generator
                                 </span>
                             </Link>
 
                             <nav className="hidden md:flex items-center gap-1">
-                                {navLinks.map(link => {
-                                    const isActive = currentRoute === link.route;
-                                    return (
-                                        <Link
-                                            key={link.route}
-                                            href={route(link.route)}
-                                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                                isActive
-                                                    ? 'bg-white/[0.08] text-white'
-                                                    : 'text-dark-200 hover:text-white hover:bg-white/[0.04]'
-                                            }`}
-                                        >
-                                            {link.icon}
-                                            {link.name}
-                                        </Link>
-                                    );
-                                })}
+                                {navLinks.map(link => (
+                                    <Link
+                                        key={link.route}
+                                        href={route(link.route)}
+                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition ${
+                                            currentRoute === link.route
+                                                ? 'bg-gray-100 text-gray-900'
+                                                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                                        }`}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                ))}
                             </nav>
                         </div>
 
-                        {/* Right: User */}
+                        {/* Right */}
                         <div className="flex items-center gap-3">
-                            {/* User menu */}
                             <div className="relative">
                                 <button
-                                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                    className="flex items-center gap-3 px-2 py-1.5 rounded-xl hover:bg-white/[0.04] transition-all duration-200 group"
+                                    onClick={() => setUserOpen(!userOpen)}
+                                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition"
                                 >
-                                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-accent-violet/30 to-accent-indigo/30 border border-white/10 flex items-center justify-center text-white text-xs font-semibold">
+                                    <div className="h-7 w-7 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <div className="hidden md:flex flex-col text-left">
-                                        <span className="text-sm font-medium text-white leading-none">{user.name}</span>
-                                        <span className="text-xs text-dark-300 leading-none mt-0.5">{user.email}</span>
-                                    </div>
-                                    <svg className={`w-4 h-4 text-dark-300 transition-transform duration-200 hidden md:block ${userMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <span className="hidden md:block font-medium text-gray-700">{user.name}</span>
+                                    <svg className={`w-3.5 h-3.5 text-gray-400 hidden md:block transition ${userOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
 
-                                {/* Dropdown */}
-                                {userMenuOpen && (
+                                {userOpen && (
                                     <>
-                                        <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
-                                        <div className="absolute right-0 top-full mt-2 w-56 glass-card p-1.5 z-50 animate-fade-in-down">
-                                            <div className="px-3 py-2 border-b border-white/[0.06] mb-1">
-                                                <p className="text-sm font-medium text-white">{user.name}</p>
-                                                <p className="text-xs text-dark-300 truncate">{user.email}</p>
+                                        <div className="fixed inset-0 z-40" onClick={() => setUserOpen(false)} />
+                                        <div className="absolute right-0 top-full mt-1.5 w-48 bg-white rounded-lg border border-gray-200 shadow-lg py-1 z-50">
+                                            <div className="px-3 py-2 border-b border-gray-100">
+                                                <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
+                                                <p className="text-xs text-gray-500 truncate">{user.email}</p>
                                             </div>
                                             <Link
                                                 href={route("profile.edit")}
-                                                className="flex items-center gap-2.5 px-3 py-2 text-sm text-dark-100 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all"
+                                                className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition"
                                             >
-                                                <svg className="w-4 h-4 text-dark-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                                </svg>
                                                 Profile
                                             </Link>
                                             <form method="POST" action={route("logout")}>
                                                 <button
                                                     type="submit"
-                                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all"
+                                                    className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition"
                                                 >
-                                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                                                    </svg>
-                                                    Logout
+                                                    Log out
                                                 </button>
                                             </form>
                                         </div>
@@ -121,13 +94,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 )}
                             </div>
 
-                            {/* Mobile menu toggle */}
                             <button
-                                onClick={() => setOpen(!open)}
-                                className="md:hidden p-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-dark-200 hover:text-white transition"
+                                onClick={() => setMobileOpen(!mobileOpen)}
+                                className="md:hidden p-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
                             >
                                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                    {open ? (
+                                    {mobileOpen ? (
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     ) : (
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
@@ -139,45 +111,29 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
 
                 {/* Mobile menu */}
-                {open && (
-                    <div className="md:hidden border-t border-white/[0.06] bg-dark-800/95 backdrop-blur-xl animate-fade-in-down">
+                {mobileOpen && (
+                    <div className="md:hidden border-t border-gray-100">
                         <div className="px-4 py-3 space-y-1">
-                            {navLinks.map(link => {
-                                const isActive = currentRoute === link.route;
-                                return (
-                                    <Link
-                                        key={link.route}
-                                        href={route(link.route)}
-                                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                                            isActive
-                                                ? 'bg-white/[0.08] text-white'
-                                                : 'text-dark-200 hover:text-white hover:bg-white/[0.04]'
-                                        }`}
-                                    >
-                                        {link.icon}
-                                        {link.name}
-                                    </Link>
-                                );
-                            })}
-                            <div className="border-t border-white/[0.06] mt-2 pt-2">
+                            {navLinks.map(link => (
                                 <Link
-                                    href={route("profile.edit")}
-                                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-dark-200 hover:text-white hover:bg-white/[0.04] transition-all"
+                                    key={link.route}
+                                    href={route(link.route)}
+                                    className={`block px-3 py-2 rounded-md text-sm font-medium transition ${
+                                        currentRoute === link.route
+                                            ? 'bg-gray-100 text-gray-900'
+                                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                                    }`}
                                 >
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                    </svg>
+                                    {link.name}
+                                </Link>
+                            ))}
+                            <div className="border-t border-gray-100 pt-2 mt-2">
+                                <Link href={route("profile.edit")} className="block px-3 py-2 rounded-md text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition">
                                     Profile
                                 </Link>
                                 <form method="POST" action={route("logout")}>
-                                    <button
-                                        type="submit"
-                                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
-                                    >
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                                        </svg>
-                                        Logout
+                                    <button type="submit" className="w-full text-left px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50 transition">
+                                        Log out
                                     </button>
                                 </form>
                             </div>
@@ -188,10 +144,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {/* Page header */}
             {header && (
-                <div className="border-b border-white/[0.04]">
-                    <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+                <div className="bg-white border-b border-gray-200">
+                    <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
                         {typeof header === 'string' ? (
-                            <h1 className="text-xl font-semibold text-white">{header}</h1>
+                            <h1 className="text-lg font-semibold text-gray-900">{header}</h1>
                         ) : (
                             header
                         )}
@@ -199,7 +155,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
             )}
 
-            <main>
+            <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
                 {children}
             </main>
         </div>

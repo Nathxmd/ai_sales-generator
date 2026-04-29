@@ -3,7 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalesPageController;
 use App\Http\Controllers\ExportController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\ModelStatusController;
+use App\Services\OpenRouterService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,14 +19,23 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $pages = auth()->user()->salesPages();
+    $openRouter = app(OpenRouterService::class);
     return Inertia::render('Dashboard', [
         'stats' => [
-            'total' => $pages->count(),
-            'generated' => (clone $pages)->where('status', 'generated')->count(),
-            'pending' => (clone $pages)->where('status', 'pending')->count(),
-            'failed' => (clone $pages)->where('status', 'failed')->count(),
+            'total' => auth()->user()->salesPages()->count(),
+            'generated' => auth()->user()->salesPages()->where('status', 'generated')->count(),
+            'pending' => auth()->user()->salesPages()->where('status', 'pending')->count(),
+            'failed' => auth()->user()->salesPages()->where('status', 'failed')->count(),
         ],
+        'worker' => [
+            'active' => (bool) Cache::get('queue-worker:sales-pages:active', false),
+            'last_seen' => Cache::get('queue-worker:sales-pages:last_seen'),
+            'fresh' => filled(Cache::get('queue-worker:sales-pages:last_seen'))
+                ? Carbon::parse(Cache::get('queue-worker:sales-pages:last_seen'))->diffInSeconds(now()) <= 45
+                : false,
+            'queue' => 'sales-pages,default',
+        ],
+        'models' => $openRouter->getModelsStatus(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -42,6 +54,8 @@ Route::middleware('auth')->group(function () {
 
     // Export
     Route::get('/pages/{page}/export', [ExportController::class, 'html'])->name('pages.export');
+
+    Route::get('/ai/model-status', [ModelStatusController::class, 'index'])->name('ai.model-status');
 });
 
 require __DIR__.'/auth.php';

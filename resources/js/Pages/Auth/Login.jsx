@@ -24,20 +24,18 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
-            <div className="text-center mb-6">
-                <h1 className="text-2xl font-bold gradient-text">Welcome Back</h1>
-                <p className="text-sm text-dark-300 mt-1">Sign in to your account to continue</p>
-            </div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">Sign in</h2>
+            <p className="text-sm text-gray-500 mb-6">Enter your credentials to continue</p>
 
             {status && (
-                <div className="mb-4 text-sm font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-4 py-3">
+                <div className="mb-4 text-sm font-medium text-white bg-green-600 border border-green-700 rounded-lg px-3 py-2.5 shadow-sm">
                     {status}
                 </div>
             )}
 
-            <form onSubmit={submit} className="space-y-5">
+            <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value="Email Address" />
+                    <InputLabel htmlFor="email" value="Email" />
                     <TextInput
                         id="email"
                         type="email"
@@ -64,41 +62,33 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <label className="flex items-center gap-2 cursor-pointer">
+                    <label className="flex items-center gap-2">
                         <Checkbox
                             name="remember"
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="text-sm text-dark-200">Remember me</span>
+                        <span className="text-sm text-gray-600">Remember me</span>
                     </label>
 
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="text-sm text-accent-violet hover:text-accent-violet/80 transition"
+                            className="text-sm text-accent-700 hover:text-accent-800 transition"
                         >
                             Forgot password?
                         </Link>
                     )}
                 </div>
 
-                <PrimaryButton className="w-full justify-center py-3 text-sm" disabled={processing}>
-                    {processing ? (
-                        <span className="flex items-center gap-2">
-                            <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                            </svg>
-                            Signing in...
-                        </span>
-                    ) : 'Sign In'}
+                <PrimaryButton className="w-full justify-center py-2.5" disabled={processing}>
+                    {processing ? 'Signing in...' : 'Sign in'}
                 </PrimaryButton>
 
-                <p className="text-center text-sm text-dark-300">
+                <p className="text-center text-sm text-gray-500">
                     Don't have an account?{' '}
-                    <Link href={route('register')} className="text-accent-violet hover:text-accent-violet/80 font-medium transition">
-                        Create one
+                    <Link href={route('register')} className="text-accent-700 hover:text-accent-800 font-medium">
+                        Sign up
                     </Link>
                 </p>
             </form>
