@@ -6,12 +6,17 @@ export default function GuestLayout({ children }) {
             <div className="w-full max-w-sm">
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-center gap-2.5">
-                        <div className="h-10 w-10 rounded-lg bg-accent-700 flex items-center justify-center text-white font-semibold text-sm">
-                            AI
-                        </div>
-                        <span className="text-lg font-semibold text-gray-900">Sales Generator</span>
-                    </Link>
+                    <img
+                        src="/logo.webp"
+                        alt="Logo"
+                        className="mx-auto h-24 w-auto"
+                    />
+                    <h1 className="mt-2 text-2xl font-bold text-gray-900">
+                        AI Sales Page Generator
+                    </h1>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Generate high-converting sales pages in seconds.
+                    </p>
                 </div>
 
                 {/* Card */}
