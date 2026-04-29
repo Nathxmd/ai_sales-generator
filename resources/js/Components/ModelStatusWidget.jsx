@@ -35,7 +35,7 @@ export default function ModelStatusWidget() {
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-gray-700">
-                        🤖 AI Model Status
+                        AI Model Status
                     </span>
                     {!loading && (
                         <span
@@ -57,7 +57,7 @@ export default function ModelStatusWidget() {
                     className="text-xs text-gray-400 hover:text-indigo-600 transition"
                     title="Refresh status"
                 >
-                    🔄 Refresh
+                    Refresh
                 </button>
             </div>
 
@@ -103,7 +103,7 @@ export default function ModelStatusWidget() {
                                     </span>
                                 ) : (
                                     <span className="text-red-400 text-xs">
-                                        ⏳ Ready {model.available_at}
+                                        Ready {model.available_at}
                                     </span>
                                 )}
                             </div>
@@ -116,8 +116,8 @@ export default function ModelStatusWidget() {
             <div className="mt-3 pt-3 border-t border-gray-100">
                 <p className="text-xs text-gray-400">
                     {availableCount === 0
-                        ? "⚠️ All models are rate limited. Generation will auto-retry when available."
-                        : "✓ System will auto-fallback if a model hits its rate limit."}
+                        ? "All models are rate limited. Generation will auto-retry when available."
+                        : "System will auto-fallback if a model hits its rate limit."}
                 </p>
                 {checkedAt && (
                     <p className="text-xs text-gray-300 mt-1">

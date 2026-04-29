@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 use App\Exceptions\RateLimitException;
 use Exception;
 
@@ -155,7 +156,7 @@ class OpenRouterService
     {
         return array_map(function ($model) {
             $cacheKey    = self::CACHE_PREFIX . md5($model['id']);
-            $limitedUntil = Cache::get($cacheKey);
+            $limitedUntil = $this->normalizeCooldownUntil(Cache::get($cacheKey));
             $isLimited   = $limitedUntil && now()->lessThan($limitedUntil);
 
             return [
@@ -177,7 +178,7 @@ class OpenRouterService
     {
         return array_filter(self::FREE_MODELS, function ($model) {
             $cacheKey     = self::CACHE_PREFIX . md5($model['id']);
-            $limitedUntil = Cache::get($cacheKey);
+            $limitedUntil = $this->normalizeCooldownUntil(Cache::get($cacheKey));
             return !$limitedUntil || now()->greaterThanOrEqualTo($limitedUntil);
         });
     }
@@ -189,7 +190,7 @@ class OpenRouterService
     {
         $until    = now()->addMinutes(self::COOLDOWN_MINUTES);
         $cacheKey = self::CACHE_PREFIX . md5($modelId);
-        Cache::put($cacheKey, $until, $until);
+        Cache::put($cacheKey, $until->timestamp, $until);
     }
 
     /**
@@ -200,6 +201,35 @@ class OpenRouterService
         foreach (self::FREE_MODELS as $model) {
             Cache::forget(self::CACHE_PREFIX . md5($model['id']));
         }
+    }
+
+    private function normalizeCooldownUntil(mixed $value): ?Carbon
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        if ($value instanceof Carbon) {
+            return $value;
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return Carbon::instance($value);
+        }
+
+        if (is_numeric($value)) {
+            return Carbon::createFromTimestamp((int) $value);
+        }
+
+        if (is_string($value)) {
+            try {
+                return Carbon::parse($value);
+            } catch (\Throwable) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     public function getLastUsedModel(): ?string
